@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './Routes'
-import store from './store/index'
+import store from './store'
+import api from './plugins/api';
 import vuetify from './plugins/vuetify'
 import * as VueGoogleMaps from 'vue2-google-maps';
 import Toast from "vue-toastification";
@@ -20,5 +21,7 @@ Vue.config.productionTip = false
 new Vue({
   vuetify,
   router,
+  store,
+  api,
   render: h => h(App), store
 }).$mount('#app')
