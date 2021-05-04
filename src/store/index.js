@@ -6,6 +6,7 @@ import device from './device';
 Vue.use(Vuex);
 
 const state = {
+  drawer: true,
   apiUrl: "https://leadbook.localhost/",
   //apiUrl: "https://localhost/signage/",
   overlay: false,
@@ -18,6 +19,9 @@ const state = {
 };
 
 const mutations = {
+  toggleDrawer(state) {
+    state.drawer = !state.drawer;
+  },
   setOverlay(state, payload){
     state.overlay = payload;
   },
@@ -58,36 +62,71 @@ const mutations = {
 
 const actions = {
   login({commit}, payload){
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve)=>{
       api.post('/auth/login',payload).then(response =>{
-          localStorage.setItem('token',"Bearer "+response.data.token)
+          localStorage.setItem('token',"Bearer "+response.data.access_token)
           commit('setUser',response.data.user);
           resolve(response.data);
       });
     });
   },
-  checkCode({commit}, payload){
-    return new Promise((resolve, reject)=>{
-      api.get('/auth/check-code/'+payload).then(response =>{
+  logout({commit}){
+    return new Promise((resolve)=>{
+      api.get('/auth/logout').then((response) =>{
+          commit('logout');
           resolve(response.data);
       });
     });
   },
-  me({commit}){
-    return new Promise((resolve, reject)=>{
-      api.get('/auth/me').then(response=>{
-        let obj = response.data;
-        if(obj.id != undefined)
-          commit('setUser',response.data);
-      })
-    });
-  },
-  operationalVersion(){
-    return new Promise((resolve, reject)=>{
-      api.get('v1/device/operational/version').then(response => {
+  register(_,payload){
+    return new Promise((resolve)=>{
+      api.post('/auth/register',payload).then(response=>{
         resolve(response.data);
       });
     });
+  },
+  verify(_,payload){
+    return new Promise((resolve)=>{
+      api.get('/auth/verify/'+payload).then(response=>{
+        resolve(response.data);
+      });
+    });
+  },
+  checkResetCode(_,payload){
+    return new Promise((resolve)=>{
+      api.get('/auth/check-reset-code/'+payload).then(response =>{
+          resolve(response.data);
+      });
+    });
+  },
+  forgetPassword(_,payload){
+    return new Promise((resolve)=>{
+      api.post('/auth/forget-password',payload).then(response=>{
+        resolve(response.data);
+      });
+    });
+  },
+  resetPassword(_,payload){
+    return new Promise((resolve)=>{
+      api.post('/auth/reset-password/'+payload.code, payload).then(response=>{
+        resolve(response.data);
+      });
+    });
+  },
+  me({commit}){
+    return new Promise((resolve)=>{
+      api.get('/auth/me').then(response=>{
+        let obj = response.data;
+        console.log()
+        if(obj.id != undefined)
+          commit('setUser',response.data);
+        
+        resolve(response.data);
+      });
+    });
+  },
+  TOGGLE_DRAWER({ commit }) {
+    commit('toggleDrawer');
   }
 };
 
@@ -118,6 +157,9 @@ const getters = {
       selectedMenu = 1;
     }
     return selectedMenu;
+  },
+  DRAWER_STATE(state) {
+    return state.drawer;
   }
 };
 

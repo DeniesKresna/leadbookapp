@@ -96,6 +96,12 @@
                                   required
                               ></v-text-field>
                               <v-text-field
+                                  v-model="createData.username"
+                                  placeholder="Username"
+                                  label="User Name"
+                                  required
+                              ></v-text-field>
+                              <v-text-field
                                   v-model="createData.email"
                                   placeholder="test@gmail.com"
                                   label="Email Address"
@@ -120,7 +126,7 @@
                               <v-btn
                                   large
                                   block
-                                  :disabled="createData.name.length < 3 || createData.email.length < 5 || createData.password < 8"
+                                  :disabled="createData.name.length < 3 || createData.username.length < 3 || createData.email.length < 5 || createData.password < 8 || createData.phone < 8"
                                   color="primary"
                                   @click="register"
                               >
@@ -142,12 +148,12 @@
                     </v-form>
                   </v-tab-item>
 
-                  <v-tab-item :value="'tab-forgetPassword'" >
+                  <v-tab-item :value="'tab-resetPassword'" >
                     <v-form>
                       <v-container>
                         <v-row class="flex-column">
                           <v-col>
-                            <p class="login-slogan display-2 text-center font-weight-medium my-10">Hi, User</p>
+                            <p class="login-slogan display-2 text-center font-weight-medium my-10">Reset</p>
                           </v-col>
                           <v-form>
                             <v-col>
@@ -175,7 +181,7 @@
                                   large
                                   :disabled="resetData.password.length < 8 && resetData.password1 != resetData.password2"
                                   color="primary"
-                                  @click="sendResetLink"
+                                  @click="resetPassword"
                               >
                                 Send Link</v-btn>
                                 <v-btn large text class="text-capitalize primary--text" @click="toLogin">Back to Login</v-btn>
@@ -187,17 +193,17 @@
                     </v-form>
                   </v-tab-item>
 
-                  <v-tab-item :value="'tab-resetPassword'" >
+                  <v-tab-item :value="'tab-forgetPassword'" >
                     <v-form>
                       <v-container>
                         <v-row class="flex-column">
                           <v-col>
-                            <p class="login-slogan display-2 text-center font-weight-medium my-10">Hi, User</p>
+                            <p class="login-slogan display-2 text-center font-weight-medium my-10">Send Link</p>
                           </v-col>
                           <v-form>
                             <v-col>
                               <v-text-field
-                                  v-model="loginData.email"
+                                  v-model="forgetData.email"
                                   placeholder="test@gmail.com"
                                   label="Type your email address"
                                   required
@@ -210,10 +216,10 @@
                                   large
                                   :disabled="forgetData.email.length < 5"
                                   color="primary"
-                                  @click="forgetPassword"
+                                  @click="sendResetLink"
                               >
                                 Reset Password</v-btn>
-                                <v-btn large text class="text-capitalize primary--text" @click="toLogin">Back to Login</v-btn>
+                                <v-btn large text class="text-capitalize primary--text" @click="sendResetLink">Back to Login</v-btn>
                             </v-col>
                           </v-form>
                         </v-row>
@@ -241,7 +247,7 @@
     data() {
       return {
         loginData: {email: '', password:''},
-        createData: {email: '', password:'', name: '', phone: ''},
+        createData: {email: '', password:'', name: '', username: '', phone: ''},
         forgetData: {email: ''},
         resetData: {password: '', password2:''},
         forgetPassword: false,
@@ -249,35 +255,64 @@
         activeTab: "tab-login"
       }
     },
-    async mounted(){
-      if(this.$route.query.resetcode != typeof undefined){
-        if(this.$route.query.resetcode != ''){
-          let resetCode = this.$route.query.resetcode;
-          let res = await this.$store.dispatch("checkCode",resetCode);
-          //console.log(res.data);
-          if(res.data != typeof undefined){
-            this.resetCode = resetCode;
-            this.forgetPassword = true;
-            this.activeTab = "tab-resetPassword";
-          }
+    async created(){
+      if(localStorage.getItem("token") != null){
+        if(localStorage.getItem("token").length > 70){
+          this.$router.push({name: "Dashboard"});
         }
       }
+      if(this.$route.query.resetcode != undefined){
+        if(this.$route.query.resetcode != ''){
+          let resetCode = this.$route.query.resetcode;
+          await this.$store.dispatch("checkResetCode",resetCode);
+          this.resetCode = resetCode;
+          this.forgetPassword = true;
+          this.activeTab = "tab-resetPassword";
+        }
+      }else if(this.$route.query.code != undefined){
+        if(this.$route.query.code != ''){
+          let code = this.$route.query.code;
+          await this.$store.dispatch("verify",code);
+          this.toLogin;
+        }
+      }/*else{
+        let res = await this.$store.dispatch("me");
+        if(res != undefined){
+          this.$router.push({name:"Dashboard"});
+        }
+      }*/
     },
     methods: {
       async login(){
-        let res = await this.$store.dispatch('login',this.loginData);
+        await this.$store.dispatch('login',this.loginData);
+        this.$router.push({name:"Dashboard"});
       },
       async register(){
-        let res = await this.$store.dispatch('login',this.loginData);
+        await this.$store.dispatch('register',this.createData);
+        this.createData = {email: '', password:'', name: '', username: '', phone: ''};
+        this.toLogin();
       },
       async sendResetLink(){
-        let res = await this.$store.dispatch('login',this.loginData);
+        await this.$store.dispatch('forgetPassword',this.forgetData);
+        this.forgetData = {email: ''};
+      },
+      async resetPassword(){
+        let payload = this.resetData;
+        payload.code = this.$route.query.resetcode;
+        await this.$store.dispatch('resetPassword',payload);
+        this.resetData = {password: '', password2:''};
+        this.toLogin();
       },
       toForgetPassword(){
         this.forgetPassword = true;
         this.activeTab = "tab-forgetPassword";
       },
+      toResetPassword(){
+        this.forgetPassword = true;
+        this.activeTab = "tab-resetPassword";
+      },
       toLogin(){
+        console.log("tologin");
         this.resetCode = "";
         this.forgetPassword = false;
         this.activeTab = "tab-login";

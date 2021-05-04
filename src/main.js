@@ -7,8 +7,11 @@ import vuetify from './plugins/vuetify'
 import * as VueGoogleMaps from 'vue2-google-maps';
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
-
 Vue.use(Toast);
+
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+Vue.use(VueSweetalert2);
 
 Vue.use(VueGoogleMaps, {
   load: {
@@ -23,5 +26,5 @@ new Vue({
   router,
   store,
   api,
-  render: h => h(App), store
+  render: h => h(App)
 }).$mount('#app')

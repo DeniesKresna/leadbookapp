@@ -1,6 +1,6 @@
 import axios from 'axios';
-import swal from './swal';
 import store from '@/store';
+import router from '@/Routes';
 
 import Vue from 'vue';
 
@@ -29,14 +29,13 @@ api.interceptors.response.use(
   response => {
     store.commit("setOverlay",false);
     if (response.status === 200 || response.status === 201) {
-      console.log(response.data)
       let msg = response.data.message;
       if(response.data.message !== undefined){
         if(response.data.message.length > 0){
           Vue.swal('Success!',msg,'success');
         }
       }
-      return Promise.resolve(response);
+      return Promise.resolve(response.data);
     } else {
       return Promise.reject(response);
     }
@@ -44,7 +43,8 @@ api.interceptors.response.use(
 error => {
     store.commit("setOverlay",false);
     if(error.response.status === 401){
-        //store.commit('setLoginDialog',true);
+        store.commit('logout');
+        router.push({name: "Login"});
         //Vue.swal('Maaf','Kamu harus login','error');
     }
     else if(error.response.status === 450){

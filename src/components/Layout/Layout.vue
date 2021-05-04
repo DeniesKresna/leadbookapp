@@ -18,6 +18,14 @@
     export default {
         name: 'Layout',
         components: {Footer, Header, Sidebar },
+        async created(){
+            await this.$store.dispatch("me");
+        },
+        computed:{
+            user(){
+                return this.$store.getters.user;
+            },
+        }
     };
 </script>
 

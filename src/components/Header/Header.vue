@@ -15,12 +15,6 @@
     </v-btn>
     <v-toolbar-title>Vue Material Admin</v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-btn
-      href="https://flatlogic.com/templates/vue-material-template-full/demo"
-      class="d-none d-sm-flex mr-5"
-      outlined
-      color="error">
-      Unlock Full Version</v-btn>
     <Search />
 
     <v-menu
@@ -219,9 +213,9 @@ import {mapActions, mapState} from 'vuex'
     },
     methods: {
       ...mapActions([ 'TOGGLE_DRAWER' ]),
-      logOut: function () {
-        window.localStorage.setItem('authenticated', false);
-        this.$router.push('/login');
+      logOut: async function () {
+        await this.$store.dispatch("logout");
+        this.$router.push({name: "Login"})
       }
     }
   };
