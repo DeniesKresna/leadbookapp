@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <ValidationObserver ref="obs">
     <v-container fluid>
       <v-row no-gutters>
         <v-col cols="7" class="main-part d-none d-md-none d-lg-flex">
@@ -45,13 +46,20 @@
                           </v-col>
                           <v-form>
                             <v-col>
+                              <ValidationProvider name="email" :rules="rules.email">
+                                <v-text-field
+                                    slot-scope="{errors}"
+                                    :error-messages="errors"
+                                    v-model="loginData.email"
+                                    placeholder="test@gmail.com"
+                                    label="Email Address"
+                                    required
+                                ></v-text-field>
+                              </ValidationProvider>
+                              <ValidationProvider name="password" :rules="rules.password">
                               <v-text-field
-                                  v-model="loginData.email"
-                                  placeholder="test@gmail.com"
-                                  label="Email Address"
-                                  required
-                              ></v-text-field>
-                              <v-text-field
+                                  slot-scope="{errors}"
+                                  :error-messages="errors"
                                   v-model="loginData.password"
                                   type="password"
                                   label="Password"
@@ -59,7 +67,7 @@
                                   hint="At least 8 characters"
                                   required
                               ></v-text-field>
-
+                              </ValidationProvider>
                             </v-col>
                             <v-col class="d-flex justify-space-between">
                               <v-btn
@@ -89,38 +97,58 @@
 
                           <v-form>
                             <v-col>
-                              <v-text-field
-                                  v-model="createData.name"
-                                  placeholder="Your Name"
-                                  label="Full Name"
-                                  required
-                              ></v-text-field>
-                              <v-text-field
-                                  v-model="createData.username"
-                                  placeholder="Username"
-                                  label="User Name"
-                                  required
-                              ></v-text-field>
-                              <v-text-field
-                                  v-model="createData.email"
-                                  placeholder="test@gmail.com"
-                                  label="Email Address"
-                                  required
-                              ></v-text-field>
-                              <v-text-field
-                                  v-model="createData.password"
-                                  placeholder="your password"
-                                  type="password"
-                                  label="Password"
-                                  hint="At least 8 characters"
-                                  required
-                              ></v-text-field>
-                              <v-text-field
-                                  placeholder="your Phone"
-                                  v-model="createData.phone"
-                                  label="Phone Number"
-                                  required
-                              ></v-text-field>
+                              <ValidationProvider name="name" :rules="rules.name">
+                                <v-text-field
+                                    slot-scope="{errors}"
+                                    :error-messages="errors"
+                                    v-model="createData.name"
+                                    placeholder="Your Name"
+                                    label="Full Name"
+                                    required
+                                ></v-text-field>
+                              </ValidationProvider>
+                              <ValidationProvider name="username" :rules="rules.username">
+                                <v-text-field
+                                    slot-scope="{errors}"
+                                    :error-messages="errors"
+                                    v-model="createData.username"
+                                    placeholder="Username"
+                                    label="User Name"
+                                    required
+                                ></v-text-field>
+                              </ValidationProvider>
+                              <ValidationProvider name="email" :rules="rules.email">
+                                <v-text-field
+                                    slot-scope="{errors}"
+                                    :error-messages="errors"
+                                    v-model="createData.email"
+                                    placeholder="test@gmail.com"
+                                    label="Email Address"
+                                    required
+                                ></v-text-field>
+                              </ValidationProvider>
+                              <ValidationProvider name="password" :rules="rules.password">
+                                <v-text-field
+                                    slot-scope="{errors}"
+                                    :error-messages="errors"
+                                    v-model="createData.password"
+                                    placeholder="your password"
+                                    type="password"
+                                    label="Password"
+                                    hint="At least 8 characters"
+                                    required
+                                ></v-text-field>
+                              </ValidationProvider>
+                              <ValidationProvider name="phone" :rules="rules.phone">
+                                <v-text-field
+                                    slot-scope="{errors}"
+                                    :error-messages="errors"
+                                    placeholder="your Phone"
+                                    v-model="createData.phone"
+                                    label="Phone Number"
+                                    required
+                                ></v-text-field>
+                              </ValidationProvider>
                             </v-col>
                             <v-col class="d-flex justify-space-between">
                               <v-btn
@@ -157,23 +185,30 @@
                           </v-col>
                           <v-form>
                             <v-col>
-                              <v-text-field
-                                  v-model="resetData.password"
-                                  placeholder="your password"
-                                  type="password"
-                                  label="Password"
-                                  hint="At least 8 characters"
-                                  required
-                              ></v-text-field>
-                              <v-text-field
-                                  v-model="resetData.password2"
-                                  placeholder="your confirmation password"
-                                  type="password"
-                                  label="Confirmation Password"
-                                  hint="At least 8 characters"
-                                  required
-                              ></v-text-field>
-
+                              <ValidationProvider name="password" :rules="rules.password">
+                                <v-text-field
+                                    slot-scope="{errors}"
+                                    :error-messages="errors"
+                                    v-model="resetData.password"
+                                    placeholder="your password"
+                                    type="password"
+                                    label="Password"
+                                    hint="At least 8 characters"
+                                    required
+                                ></v-text-field>
+                              </ValidationProvider>
+                              <ValidationProvider name="password" :rules="rules.password">
+                                <v-text-field
+                                    slot-scope="{errors}"
+                                    :error-messages="errors"
+                                    v-model="resetData.password2"
+                                    placeholder="your confirmation password"
+                                    type="password"
+                                    label="Confirmation Password"
+                                    hint="At least 8 characters"
+                                    required
+                                ></v-text-field>
+                              </ValidationProvider>
                             </v-col>
                             <v-col class="d-flex justify-space-between">
                               <v-btn
@@ -202,13 +237,16 @@
                           </v-col>
                           <v-form>
                             <v-col>
-                              <v-text-field
-                                  v-model="forgetData.email"
-                                  placeholder="test@gmail.com"
-                                  label="Type your email address"
-                                  required
-                              ></v-text-field>
-
+                              <ValidationProvider name="email" :rules="rules.email">
+                                <v-text-field
+                                    slot-scope="{errors}"
+                                    :error-messages="errors"
+                                    v-model="forgetData.email"
+                                    placeholder="test@gmail.com"
+                                    label="Type your email address"
+                                    required
+                                ></v-text-field>
+                              </ValidationProvider>
                             </v-col>
                             <v-col class="d-flex justify-space-between">
                               <v-btn
@@ -219,7 +257,7 @@
                                   @click="sendResetLink"
                               >
                                 Reset Password</v-btn>
-                                <v-btn large text class="text-capitalize primary--text" @click="sendResetLink">Back to Login</v-btn>
+                                <v-btn large text class="text-capitalize primary--text" @click="toLogin">Back to Login</v-btn>
                             </v-col>
                           </v-form>
                         </v-row>
@@ -238,11 +276,16 @@
         </v-col>
       </v-row>
     </v-container>
+    </ValidationObserver>
   </v-app>
 </template>
 
 <script>
-
+  import {
+    ValidationProvider,
+    ValidationObserver,
+  } from "vee-validate";
+  import rules from '@/rules';
   export default {
     data() {
       return {
@@ -252,8 +295,13 @@
         resetData: {password: '', password2:''},
         forgetPassword: false,
         resetCode: "",
-        activeTab: "tab-login"
+        activeTab: "tab-login",
+        rules: rules
       }
+    },
+    components: {
+      ValidationProvider,
+      ValidationObserver
     },
     async created(){
       if(localStorage.getItem("token") != null){
@@ -306,16 +354,19 @@
       toForgetPassword(){
         this.forgetPassword = true;
         this.activeTab = "tab-forgetPassword";
+        this.$refs.obs.reset();
       },
       toResetPassword(){
         this.forgetPassword = true;
         this.activeTab = "tab-resetPassword";
+        this.$refs.obs.reset();
       },
       toLogin(){
         console.log("tologin");
         this.resetCode = "";
         this.forgetPassword = false;
         this.activeTab = "tab-login";
+        this.$refs.obs.reset();
       }
     },
   }

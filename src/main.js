@@ -5,6 +5,10 @@ import store from './store'
 import api from './plugins/api';
 import vuetify from './plugins/vuetify'
 import * as VueGoogleMaps from 'vue2-google-maps';
+
+import VeeValidate from "vee-validate";
+Vue.use(VeeValidate, { inject: false });
+
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 Vue.use(Toast);

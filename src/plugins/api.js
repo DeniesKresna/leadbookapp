@@ -54,7 +54,7 @@ error => {
     }
     else if(error.response.status === 422){
         let renderhtml = "<ul>";
-        let err = error.response.data.errors;
+        let err = error.response.data;
         for(let x in err){
             renderhtml += "<li>" + err[x][0] + "</li>";
         }
