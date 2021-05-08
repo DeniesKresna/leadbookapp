@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import api from '@/plugins/api';
+import company from './company';
 Vue.use(Vuex);
 
 const state = {
@@ -8,12 +9,8 @@ const state = {
   apiUrl: "https://leadbook.localhost/",
   //apiUrl: "https://localhost/signage/",
   overlay: false,
-  page: "",
-  links: [],
   user:null,
-  loginDialog:false,
-  activeMenu: "device-quick-info",
-  version: "1.083"
+  version: "1.00"
 };
 
 const mutations = {
@@ -23,34 +20,9 @@ const mutations = {
   setOverlay(state, payload){
     state.overlay = payload;
   },
-  setLoginDialog(state, payload){
-    state.loginDialog = payload;
-  },
-  setPage(state, payload){
-    state.page = payload;
-    if(payload == "academy"){
-      state.links = [
-        {'label':'Daftar Jobhun Academy','url':'/academy/form','auth':false},
-        {'label':'Peserta','url':'/academy/customer','auth':true},
-        {'label':'Periode','url':'/academy/period','auth':true},
-        {'label':'Kelas','url':'/academy/list','auth':true},
-        {'label':'Mentor','url':'/user/mentor','auth':true},
-      ];
-    }else if(payload == "ask-career"){
-      state.links = [
-        {'label':'Pendaftaran','url':'/ask-career/form','auth':false},
-        {'label':'Customer','url':'/ask-career/customer','auth':true},
-        {'label':'Periode','url':'/ask-career/period','auth':true},
-        {'label':'List','url':'/ask-career/list','auth':true},
-      ]
-    }
-  },
   setUser(state, payload){
     state.loginDialog = false;
     state.user = payload;
-  },
-  setActiveMenu(state, payload){
-    state.activeMenu = payload;
   },
   logout(state){
     state.user = null;
@@ -135,26 +107,8 @@ const getters = {
   overlay(state){
     return state.overlay;
   },
-  page(state){
-    return state.page;
-  },
-  links(state){
-    return state.links;
-  },
   user(state){
     return state.user;
-  },
-  loginDialog(state){
-    return state.loginDialog;
-  },
-  selectedMenu(state){
-    let selectedMenu = 0;
-    if(state.activeMenu=="device-quick-info"){
-      selectedMenu = 0;
-    }else{
-      selectedMenu = 1;
-    }
-    return selectedMenu;
   },
   DRAWER_STATE(state) {
     return state.drawer;
@@ -167,6 +121,6 @@ export default new Vuex.Store({
     actions,
     getters,
     modules: {
-        //device
+        company
     }
 });

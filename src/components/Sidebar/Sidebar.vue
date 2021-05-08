@@ -103,6 +103,8 @@ import {mapActions, mapState} from 'vuex'
       return {
         items: [
           { title: 'Dashboard', icon: 'mdi-home', link: '/dashboard' },
+          { title: 'Company', icon: 'mdi-domain', link: '/company' },
+          /*
           { title: 'Typography', icon: 'mdi-format-size', link: '/typography' },
           { title: 'Tables', icon: 'mdi-grid-large', link: '/tables' },
           { title: 'Notifications', icon: 'mdi-bell-outline', link: '/notifications' },
@@ -116,18 +118,18 @@ import {mapActions, mapState} from 'vuex'
               { title: 'Charts', icon: 'mdi-circle-small', link: '/charts'},
               { title: 'Maps', icon: 'mdi-circle-small', link: '/maps'},
             ],
-          },
+          },*/
           { divider: true },
           { heading: 'HELP' },
-          { title: 'Library', icon: 'mdi-book-variant-multiple', href: 'https://flatlogic.com/templates'},
-          { title: 'Support', icon: 'mdi-forum', href: 'https://flatlogic.com/forum/'},
-          { title: 'FAQ', icon: 'mdi-help-circle-outline', href:'https://flatlogic.com/templates/vue-material-template'},
+          { title: 'Support', icon: 'mdi-forum', href: 'https://leadbook.com'},
+          { title: 'FAQ', icon: 'mdi-help-circle-outline', href:'https://leadbook.com'},
+          /*
           { divider: true },
           { heading: 'PROJECTS' },
           { title: 'My recent', icon: 'mdi-circle-medium', color: 'warning'},
           { title: 'Starred', icon: 'mdi-circle-medium', color: 'primary'},
           { title: 'Background', icon: 'mdi-circle-medium', color: 'error'}
-
+*/
         ],
         sidebarWidth: 240,
         sidebarMinWidth: 96

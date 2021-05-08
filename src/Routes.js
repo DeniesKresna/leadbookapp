@@ -5,6 +5,7 @@ import Layout from '@/components/Layout/Layout';
 
 // Pages
 import Dashboard from '@/pages/Dashboard/Dashboard';
+import Company from '@/pages/Company/Company'
 import Typography from '@/pages/Typography/Typography'
 import Tables from '@/pages/Tables/Basic'
 import Notifications from '@/pages/Notifications/Notifications'
@@ -38,6 +39,11 @@ export default new Router({
         path: 'typography',
         name: 'Typography',
         component: Typography,
+      },
+      {
+        path: 'company',
+        name: 'Company',
+        component: Company,
       },
       {
         path: 'tables',
