@@ -18,14 +18,14 @@
                 ></v-text-field>
               </span>
               <v-spacer />
-              <span><!--
+              <span>
                 <v-btn
                   class="text-capitalize"
                   large
                   color="primary"
-                  @click="openCompanyModal('create')"
+                  @click="showCompanyModal('create')"
                 ><v-icon>mdi-plus</v-icon>
-                  Create</v-btn>-->
+                  Create</v-btn>
               </span>
             </v-row>
             <v-row no-gutters class="company-widget pb-6">
@@ -74,7 +74,14 @@
       </v-col>
     </v-row>
   </v-container>
-  <modal-form :modalConfig="modal.config" :formDatas="modal.datas" />
+  <modal-form
+    :show="companyModal.show"
+    :mode="companyModal.mode"
+    :label="companyModal.label"
+    :datas="companyModal.datas"
+    @cancelClick="companyModal = {}"
+    @submitClick="processCompanyModal"
+    />
 </div>
 </template>
 
@@ -95,20 +102,9 @@ export default {
       companyFilter: {
         name: ""
       },
-      companyData: {
-
-      },
+      companyData: {},
       isTyping: false,
-      modal:{
-        config: {
-          'show': true,
-          'mode': 'create',
-          'entity': 'Company'
-        },
-        datas: [
-          {name: 'name', value: '', label: 'Company Name', editable:false, input:"text"}
-        ]
-      }
+      companyModal: {}
     }
   },
   created(){
@@ -126,6 +122,30 @@ export default {
     async setFavourite(payload){
       await this.$store.dispatch('company/setFavourite', payload);
       this.loadData(this.companies.current_page);
+    },
+    showCompanyModal(mode='create'){
+      this.companyModal = {
+        show: true,
+        mode: mode,
+        label: 'Company',
+        datas: [
+          {name: 'name', value: '', label: 'Company Name', editable:false, input:"text"}
+        ]
+      }
+    },
+    async processCompanyModal(){
+      if(this.companyModal.datas.length > 0){
+        let datas = this.companyModal.datas;
+        let payload = new FormData();
+        for ( let data in datas ) {
+            payload.append(data.name,data.value);
+        }
+        await this.$store.dispatch('company/store',payload);
+        this.companyModal = {};
+        this.loadData();
+      }else{
+        alert("no data");
+      }
     }
   },
   watch: {

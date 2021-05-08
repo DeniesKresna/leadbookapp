@@ -1,52 +1,50 @@
 <template>
 <v-dialog
-    v-model="dialog.show"
+    :value="show"
     persistent
   >
   <v-card>
-    <v-card-title class="headline text-capitalize">{{dialog.mode }} {{dialog.entity}}</v-card-title>
+    <v-card-title class="headline text-capitalize">{{mode}} {{label}}</v-card-title>
     <v-card-text>
       <v-container>
-        <v-row>
-          <div v-if="datas.length > 0">
-            <div v-for="data in datas" :key="data.name">
-                <v-col cols="12" v-if="data.input=='text'">
-                    <v-text-field v-model="data.value" :label="data.label" :readonly="(dialog.mode == 'edit' && !data.editable) || dialog.mode == 'show'"></v-text-field>
-                </v-col>
-                <v-col cols="12" v-if="data.input=='number'">
-                    <v-text-field v-model="data.value" :label="data.label" type="number" :readonly="(dialog.mode == 'edit' && !data.editable) || dialog.mode == 'show'"></v-text-field>
-                </v-col>
-                <v-col cols="12" v-if="data.input=='textarea'">
-                    <v-textarea v-model="data.value" :label="data.label" :readonly="(dialog.mode == 'edit' && !data.editable) || dialog.mode == 'show'"></v-textarea>    
-                </v-col>
-                <v-col cols="12" v-if="data.input=='media'">
-                    <img :src="data.url" height="200" />
-                </v-col>
-                <v-col cols="12" v-if="data.input=='media'">
-                    <v-file-input v-model="data.value" accept="image/*" :label="data.label"  @change="setDataImage(data)" :disabled="dialog.mode == 'show'"></v-file-input>
-                </v-col>
-            </div>
-          </div>
-        </v-row>
+        <div v-if="datas.length > 0">
+          <v-row v-for="data in datas" :key="data.name">
+              <v-col cols="12" sm="12" md="12" lg="12" v-if="data.input=='text'">
+                  <v-text-field v-model="data.value" :label="data.label" :readonly="(mode == 'edit' && !data.editable) || mode == 'show'"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="12" md="12" lg="12" v-if="data.input=='number'">
+                  <v-text-field v-model="data.value" :label="data.label" type="number" :readonly="(mode == 'edit' && !data.editable) || mode == 'show'"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="12" md="12" lg="12" v-if="data.input=='textarea'">
+                  <v-textarea v-model="data.value" :label="data.label" :readonly="(mode == 'edit' && !data.editable) || mode == 'show'"></v-textarea>    
+              </v-col>
+              <v-col cols="12" sm="12" md="12" lg="12" v-if="data.input=='media'">
+                  <img :src="data.url" height="200" />
+              </v-col>
+              <v-col cols="12" sm="12" md="12" lg="12" v-if="data.input=='media'">
+                  <v-file-input v-model="data.value" accept="image/*" :label="data.label"  @change="setDataImage(data)" :disabled="mode == 'show'"></v-file-input>
+              </v-col>
+          </v-row>
+        </div>
       </v-container>
     </v-card-text>
 
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn
-        v-if="dialog.mode != 'show'"
+        v-if="mode != 'show'"
         color="green darken-1"
         text
-        @click="processData(dialog.mode)"
+        @click="processData(mode)"
       >
-        <span class="text-capitalize">{{dialog.mode}}</span>
+        <span class="text-capitalize">{{mode}}</span>
       </v-btn>
       <v-btn
         color="red darken-1"
         text
-        @click="dialog.show = false"
+        @click="cancelClicked"
       >
-        Batal
+        Cancel
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -54,21 +52,32 @@
 </template>
 <script>
 export default{
-    props:["modalConfig","formDatas"],
+    props:{
+      show: {type: Boolean, default: false},
+      mode: {type: String, default: 'create'},
+      label: {type: String, default: 'table'},
+      datas: {type: Array, default: function(){
+        return [];
+      }}
+    },
     data() {
         return {
-            dialog: this.modalConfig,
-            datas: this.formDatas
         }
     },
     methods: {
-        setDataImage: function(img,data){
-			if(img != null){
-				data.url = URL.createObjectURL(img);
-			}else{
-				data.url = "@/assets/noimage.png";
-			}
-		}
+      setDataImage(img,data){
+        if(img != null){
+          data.url = URL.createObjectURL(img);
+        }else{
+          data.url = "@/assets/noimage.png";
+        }
+      },
+      process(){
+        this.$emit('submitClick');
+      },
+      cancelClicked(){
+        this.$emit('cancelClick');
+      }
     }
 }
 </script>
