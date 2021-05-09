@@ -5,9 +5,7 @@ import router from '@/Routes';
 import Vue from 'vue';
 
 const api = axios.create({
- //baseURL: 'https://smartit-32ba08c9.localhost.run/pendaftaran-api/public/api',
  baseURL: 'http://leadbook.localhost:8080/public/api/',
- //baseURL: 'https://api.signage.co.id/api/',
 });
 
 api.defaults.timeout = 10000;

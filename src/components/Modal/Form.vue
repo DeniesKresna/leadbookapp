@@ -1,4 +1,6 @@
 <template>
+<div>
+<ValidationObserver ref="obs">
 <v-dialog
     :value="show"
     persistent
@@ -10,19 +12,35 @@
         <div v-if="datas.length > 0">
           <v-row v-for="data in datas" :key="data.name">
               <v-col cols="12" sm="12" md="12" lg="12" v-if="data.input=='text'">
-                  <v-text-field v-model="data.value" :label="data.label" :readonly="(mode == 'edit' && !data.editable) || mode == 'show'"></v-text-field>
+                  <ValidationProvider name="data.name" :rules="data.rules">
+                    <v-text-field v-model="data.value" :label="data.label" :readonly="(mode == 'edit' && !data.editable) || mode == 'show'"
+                      slot-scope="{errors}"
+                      :error-messages="errors"></v-text-field>
+                  </ValidationProvider>
               </v-col>
               <v-col cols="12" sm="12" md="12" lg="12" v-if="data.input=='number'">
-                  <v-text-field v-model="data.value" :label="data.label" type="number" :readonly="(mode == 'edit' && !data.editable) || mode == 'show'"></v-text-field>
+                  <ValidationProvider name="data.name" :rules="data.rules">
+                    <v-text-field v-model="data.value" :label="data.label" type="number" :readonly="(mode == 'edit' && !data.editable) || mode == 'show'"
+                      slot-scope="{errors}"
+                      :error-messages="errors"></v-text-field>
+                  </ValidationProvider>
               </v-col>
               <v-col cols="12" sm="12" md="12" lg="12" v-if="data.input=='textarea'">
-                  <v-textarea v-model="data.value" :label="data.label" :readonly="(mode == 'edit' && !data.editable) || mode == 'show'"></v-textarea>    
+                  <ValidationProvider name="data.name" :rules="data.rules">
+                    <v-textarea v-model="data.value" :label="data.label" :readonly="(mode == 'edit' && !data.editable) || mode == 'show'"
+                      slot-scope="{errors}"
+                      :error-messages="errors"></v-textarea>    
+                  </ValidationProvider>
               </v-col>
               <v-col cols="12" sm="12" md="12" lg="12" v-if="data.input=='media'">
-                  <img :src="data.url" height="200" />
+                  <img :src="data.url" height="200" v-if="data.value != null" :ref="data.name"/>
               </v-col>
               <v-col cols="12" sm="12" md="12" lg="12" v-if="data.input=='media'">
-                  <v-file-input v-model="data.value" accept="image/*" :label="data.label"  @change="setDataImage(data)" :disabled="mode == 'show'"></v-file-input>
+                  <ValidationProvider name="data.name" :rules="data.rules">
+                    <v-file-input v-model="data.value" accept="image/*" :label="data.label"  @change="setDataImage(data)" :disabled="mode == 'show'"
+                      slot-scope="{errors}"
+                      :error-messages="errors"></v-file-input>
+                  </ValidationProvider>
               </v-col>
           </v-row>
         </div>
@@ -35,9 +53,9 @@
         v-if="mode != 'show'"
         color="green darken-1"
         text
-        @click="processData(mode)"
+        @click="submitClicked"
       >
-        <span class="text-capitalize">{{mode}}</span>
+        <span>{{mode}}</span>
       </v-btn>
       <v-btn
         color="red darken-1"
@@ -49,8 +67,14 @@
     </v-card-actions>
   </v-card>
 </v-dialog>
+</ValidationObserver>
+</div>
 </template>
 <script>
+import {
+    ValidationProvider,
+    ValidationObserver,
+  } from "vee-validate";
 export default{
     props:{
       show: {type: Boolean, default: false},
@@ -60,19 +84,18 @@ export default{
         return [];
       }}
     },
+    components: {
+      ValidationProvider, ValidationObserver
+    },
     data() {
         return {
         }
     },
     methods: {
-      setDataImage(img,data){
-        if(img != null){
-          data.url = URL.createObjectURL(img);
-        }else{
-          data.url = "@/assets/noimage.png";
-        }
+      setDataImage(data){
+        data.url = URL.createObjectURL(data.value);
       },
-      process(){
+      submitClicked(){
         this.$emit('submitClick');
       },
       cancelClicked(){

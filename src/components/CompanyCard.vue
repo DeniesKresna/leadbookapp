@@ -5,7 +5,7 @@
   >
     <v-img
       height="250"
-      src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+      :src="assetUrl + company.image"
     ></v-img>
 
     <v-card-title>{{company.name}}</v-card-title>
@@ -77,6 +77,9 @@ export default {
   computed:{
     favouriteStar() {
       return this.company.isFavourite? 5:0;
+    },
+    assetUrl(){
+      return this.$store.getters.assetUrl;
     }
   }
 };

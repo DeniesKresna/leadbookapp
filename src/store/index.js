@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 const state = {
   drawer: true,
-  apiUrl: "https://leadbook.localhost/",
+  assetUrl: "http://leadbook.localhost:8080/public/images/",
   //apiUrl: "https://localhost/signage/",
   overlay: false,
   user:null,
@@ -101,8 +101,8 @@ const actions = {
 };
 
 const getters = {
-  apiUrl(state){
-    return state.apiUrl;
+  assetUrl(state){
+    return state.assetUrl;
   },
   overlay(state){
     return state.overlay;

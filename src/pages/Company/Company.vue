@@ -12,7 +12,7 @@
             <v-row no-gutters class="company-widget pb-0">
               <span>
                 <v-text-field
-                  v-model="companyFilter.name"
+                  v-model="search"
                   label="Filter Name"
                   @input="isTyping = true"
                 ></v-text-field>
@@ -20,7 +20,6 @@
               <v-spacer />
               <span>
                 <v-btn
-                  class="text-capitalize"
                   large
                   color="primary"
                   @click="showCompanyModal('create')"
@@ -56,19 +55,12 @@
       <v-col lg=3 cols=12>
         <v-card class="mx-1 mb-1">
           <v-card-title class="pa-6 pb-3">
-            <p>Typography Colors</p>
+            <p>Your Favourite Company :</p>
           </v-card-title>
           <v-card-text class="pa-6 pt-0">
-            <v-row no-gutters class="company-widget pb-6">
-              <v-col cols="12" class="card-dark-grey">
-                <h1 class="primary--text">h1. Heading</h1>
-                <h2 class="success--text">h2. Heading</h2>
-                <h3 class="secondary--text">h3. Heading</h3>
-                <h4 class="warning--text">h4. Heading</h4>
-                <h5 class="primary--text">h5. Heading</h5>
-                <h6 class="info--text">h6. Heading</h6>
-              </v-col>
-            </v-row>
+            <ul>
+              <li v-for="company in favouriteCompanies" :key="company.id"><h6 class="info--text">{{company.name}}</h6></li>
+            </ul>
           </v-card-text>
         </v-card>
       </v-col>
@@ -89,6 +81,7 @@
 import _ from 'lodash';
 import CompanyCard from '@/components/CompanyCard';
 import ModalForm from '@/components/Modal/Form';
+import rules from '@/rules';
 export default {
   name: 'Company',
   components: {
@@ -99,22 +92,22 @@ export default {
       companies: {
         data: []
       },
-      companyFilter: {
-        name: ""
-      },
+      search: "",
       companyData: {},
+      favouriteCompanies: [],
       isTyping: false,
       companyModal: {}
     }
   },
   created(){
     this.loadData(1);
+    this.loadFavourite();
   },
   methods: {
     async loadData(page = 1){
       let payload = "?page="+page;
-      if((this.companyFilter.name).trim().length > 0){
-        payload += "&name=" + this.companyFilter.name;
+      if((this.search).trim().length > 0){
+        payload += "&name=" + this.search;
       }
       let res = await this.$store.dispatch('company/index',payload);
       this.companies = res;
@@ -122,6 +115,11 @@ export default {
     async setFavourite(payload){
       await this.$store.dispatch('company/setFavourite', payload);
       this.loadData(this.companies.current_page);
+      this.loadFavourite();
+    },
+    async loadFavourite(){
+      let res = await this.$store.dispatch('company/list', "?favourite=1")
+      this.favouriteCompanies = res;
     },
     showCompanyModal(mode='create'){
       this.companyModal = {
@@ -129,7 +127,11 @@ export default {
         mode: mode,
         label: 'Company',
         datas: [
-          {name: 'name', value: '', label: 'Company Name', editable:false, input:"text"}
+          {name: 'name', value: '', label: 'Company Name', editable:false, input:"text", rules:rules.name},
+          {name: 'image', value: null, label: 'Company Picture', editable:false, input:"media", rules:""},
+          {name: 'address', value: '', label: 'Company Address', editable:false, input:"text", rules:""},
+          {name: 'phone', value: '', label: 'Company Phone', editable:false, input:"text", rules:rules.phone},
+          {name: 'description', value: '', label: 'Company Description', editable:false, input:"textarea", rules:""}
         ]
       }
     },
@@ -137,9 +139,9 @@ export default {
       if(this.companyModal.datas.length > 0){
         let datas = this.companyModal.datas;
         let payload = new FormData();
-        for ( let data in datas ) {
-            payload.append(data.name,data.value);
-        }
+        datas.forEach((item)=>{
+          payload.append(item.name,item.value);
+        });
         await this.$store.dispatch('company/store',payload);
         this.companyModal = {};
         this.loadData();
@@ -149,7 +151,7 @@ export default {
     }
   },
   watch: {
-    companyFilter: _.debounce(function() {
+    search: _.debounce(function() {
       this.isTyping = false;
     }, 1000),
     isTyping: function(value) {

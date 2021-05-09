@@ -13,7 +13,7 @@
         <v-icon style="font-size: 28px">mdi-menu</v-icon>
       </template>
     </v-btn>
-    <v-toolbar-title>Vue Material Admin</v-toolbar-title>
+    <v-toolbar-title>Leadbook</v-toolbar-title>
     <v-spacer></v-spacer>
     <Search />
 
