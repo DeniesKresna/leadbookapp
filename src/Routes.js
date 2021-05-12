@@ -6,6 +6,8 @@ import Layout from '@/components/Layout/Layout';
 // Pages
 import Dashboard from '@/pages/Dashboard/Dashboard';
 import Company from '@/pages/Company/Company'
+import Category from '@/pages/Category/Category'
+import Post from '@/pages/Post/Post'
 import Typography from '@/pages/Typography/Typography'
 import Tables from '@/pages/Tables/Basic'
 import Notifications from '@/pages/Notifications/Notifications'
@@ -44,6 +46,16 @@ export default new Router({
         path: 'company',
         name: 'Company',
         component: Company,
+      },
+      {
+        path: 'category',
+        name: 'Category',
+        component: Category,
+      },
+      {
+        path: 'post',
+        name: 'Post',
+        component: Post,
       },
       {
         path: 'tables',

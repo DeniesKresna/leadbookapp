@@ -38,17 +38,17 @@ export default {
   data: () => ({
     config,
     icons: [
-      {icon: 'mdi-facebook', link: 'https://twitter.com/leadbook/'},
-      {icon: 'mdi-twitter', link: 'https://www.facebook.com/leadbook'},
-      {icon: 'mdi-github', link: 'https://github.com/leadbook/'},
+      {icon: 'mdi-facebook', link: 'https://twitter.com/denieskresna'},
+      {icon: 'mdi-twitter', link: 'https://www.facebook.com/denieskresna'},
+      {icon: 'mdi-github', link: 'https://github.com/denieskresna/'},
 
     ],
     links: [
-      {text: 'Leadbook', link: 'https://leadbook.com/'},
-      {text: 'About Us', link: 'https://leadbook.com/about'},
-      {text: 'Blog', link: 'https://leadbook.com/blog'},
+      {text: 'Denies', link: 'https://denies.online/'},
+      {text: 'About Us', link: 'https://denies.online/about'},
+      {text: 'Blog', link: 'https://denies.online/blog'},
     ]
-  }),
+  })
 }
 </script>
 

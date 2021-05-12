@@ -5,9 +5,9 @@ module.exports = {
     "vuetify"
   ],
   publicPath: process.env.NODE_ENV === 'production'
-    ? '/leadbook'
+    ? '/famous'
     : '/',
-  outputDir: 'leadbook',
+  outputDir: 'famous',
   devServer: {
     disableHostCheck: true,
     

@@ -269,7 +269,7 @@
             </v-col>
             <v-col cols="12" class="d-flex justify-center">
               <v-footer>
-                <div class="primary--text">© 2021 <a href="https://leadbook.com/" class="text-decoration-none">Leadbook</a>, LLC. All rights reserved.</div>
+                <div class="primary--text">© 2021 <a href="http://denies.online/" class="text-decoration-none">Denies Kresna</a>, LLC. All rights reserved.</div>
               </v-footer>
             </v-col>
           </v-row>
