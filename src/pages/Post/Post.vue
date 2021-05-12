@@ -40,7 +40,7 @@
                     item-key="id"
                     class="elevation-1"
                   >
-<template v-slot:[`item.actions`]="{ item }">
+                    <template v-slot:[`item.actions`]="{ item }">
 							    	  <v-icon
 								        small
 								        class="mr-2"
