@@ -4,7 +4,10 @@ module.exports = {
   "transpileDependencies": [
     "vuetify"
   ],
-  outputDir: 'application',
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/leadbook'
+    : '/',
+  outputDir: 'leadbook',
   devServer: {
     disableHostCheck: true,
     
@@ -17,10 +20,10 @@ module.exports = {
     //public: "cobadenies.loca.lt",
     //host: "localhost"
     //office
-    //public: 'https://10.100.100.128:3000/'
+    public: 'https://10.100.100.128:3000/'
     
     //home
-    public: 'https://192.168.100.28:3000/'
+    //public: 'https://192.168.100.28:3000/'
     //public: 'https://cobadenies.loca.lt/'
 
     //dilo

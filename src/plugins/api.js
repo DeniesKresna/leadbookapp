@@ -6,6 +6,7 @@ import Vue from 'vue';
 
 const api = axios.create({
  baseURL: 'http://leadbook.localhost:8080/public/api/',
+ //baseURL: 'http://103.55.38.109/leadbookapi/public/api/'
 });
 
 api.defaults.timeout = 10000;

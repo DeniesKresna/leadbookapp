@@ -7,6 +7,7 @@ Vue.use(Vuex);
 const state = {
   drawer: true,
   assetUrl: "http://leadbook.localhost:8080/public/images/",
+  //assetUrl: "http://103.55.38.109/leadbookapi/public/images/",
   //apiUrl: "https://localhost/signage/",
   overlay: false,
   user:null,
