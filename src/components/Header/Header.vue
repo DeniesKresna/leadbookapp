@@ -13,7 +13,7 @@
         <v-icon style="font-size: 28px">mdi-menu</v-icon>
       </template>
     </v-btn>
-    <v-toolbar-title>Leadbook</v-toolbar-title>
+    <v-toolbar-title>Denies Kresna</v-toolbar-title>
     <v-spacer></v-spacer>
     <Search />
 
@@ -140,8 +140,8 @@
             </v-btn>
         </template>
         <v-list >
-          <div class="text-h5 grey--text text--darken-3 px-4 pt-4">John Smith</div>
-          <div class="subtitle-2 primary--text font-weight-regular px-4">Flatlogic.com</div>
+          <div class="text-h5 grey--text text--darken-3 px-4 pt-4">{{user.name}}</div>
+          <!--<div class="subtitle-2 primary--text font-weight-regular px-4">Flatlogic.com</div>-->
           <v-list-item-group color="primary">
             <v-list-item
               v-for="(item, i) in account"
@@ -209,6 +209,9 @@ import {mapActions, mapState} from 'vuex'
         get() {
           return this.drawer
         },
+      },
+      user() {
+        return this.$store.getters.user;
       }
     },
     methods: {

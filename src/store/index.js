@@ -9,6 +9,10 @@ const state = {
   assetUrl: "http://leadbook.localhost:8080/public/images/",
   //assetUrl: "http://103.55.38.109/leadbookapi/public/images/",
   //apiUrl: "https://localhost/signage/",
+  instanceName: "famous.com",
+  instanceUrl: "Formasi Agung Selaras",
+  instanceShort: "famous",
+  page: "Dashboard",
   overlay: false,
   user:null,
   version: "1.00"
@@ -24,6 +28,9 @@ const mutations = {
   setUser(state, payload){
     state.loginDialog = false;
     state.user = payload;
+  },
+  setPage(state, payload){
+    state.page = payload;
   },
   logout(state){
     state.user = null;

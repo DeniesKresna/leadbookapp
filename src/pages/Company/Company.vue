@@ -1,12 +1,12 @@
 <template>
 <div>
   <v-container fluid class="company-page">
-    <h1 class="page-title mt-10 mb-6">Company</h1>
+    <h1 class="page-title mt-10 mb-6">{{page}}</h1>
     <v-row>
       <v-col lg=9 cols=12>
         <v-card class="mx-1 mb-1">
           <v-card-title class="pa-6 pb-3">
-            <p>Companies</p>
+            <p>{{page}}</p>
           </v-card-title>
           <v-card-text class="pa-6 pt-0">
             <v-row no-gutters class="company-widget pb-0">
@@ -93,7 +93,6 @@ export default {
         data: []
       },
       search: "",
-      companyData: {},
       favouriteCompanies: [],
       isTyping: false,
       companyModal: {}
@@ -148,6 +147,11 @@ export default {
       }else{
         alert("no data");
       }
+    }
+  },
+  computed: {
+    page(){
+      return this.$store.state.page;
     }
   },
   watch: {

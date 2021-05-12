@@ -104,6 +104,8 @@ import {mapActions, mapState} from 'vuex'
         items: [
           { title: 'Dashboard', icon: 'mdi-home', link: '/dashboard' },
           { title: 'Company', icon: 'mdi-domain', link: '/company' },
+          { title: 'Category', icon: 'mdi-domain', link: '/category' },
+          { title: 'Post', icon: 'mdi-domain', link: '/post' },
           /*
           { title: 'Typography', icon: 'mdi-format-size', link: '/typography' },
           { title: 'Tables', icon: 'mdi-grid-large', link: '/tables' },
@@ -121,8 +123,8 @@ import {mapActions, mapState} from 'vuex'
           },*/
           { divider: true },
           { heading: 'HELP' },
-          { title: 'Support', icon: 'mdi-forum', href: 'https://leadbook.com'},
-          { title: 'FAQ', icon: 'mdi-help-circle-outline', href:'https://leadbook.com'},
+          { title: 'Support', icon: 'mdi-forum', href: 'http://denies.online'},
+          { title: 'FAQ', icon: 'mdi-help-circle-outline', href:'http://denies.online'},
           /*
           { divider: true },
           { heading: 'PROJECTS' },
